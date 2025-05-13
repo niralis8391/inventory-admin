@@ -4,11 +4,11 @@ import API from '../API/API'
 export const Dashboard = () => {
 
     const [productCount, setProductCount] = useState(0)
-    const [totalOrder, setTotalOrders] = useState(0)
+    const [ordersCount, setOrdersCount] = useState(0)
+    const [order, setOrder] = useState([])
 
     const token = localStorage.getItem("token")
     useEffect(() => {
-
         async function fetchProductCount() {
             try {
                 const response = await API.get('/product/productCounts', {
@@ -23,11 +23,42 @@ export const Dashboard = () => {
             }
         }
         fetchProductCount()
+
+        async function fetchOrderCount() {
+            try {
+                const response = await API.get('/order/orderCount', {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                })
+                setOrdersCount(response.data.data)
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+        fetchOrderCount()
+
+        async function fetchOrderData() {
+            try {
+                const response = await API.get('/order/pendingOrders', {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                })
+                setOrder(response.data.data)
+            } catch (error) {
+                console.log(error)
+            } finally {
+            }
+        }
+        fetchOrderData()
     }, [])
 
 
     return (
-        <div className='m-10'>
+        <div className='m-10 h-screen'>
             <div className='flex gap-5 items-center mt-5'>
                 <div className='flex flex-col p-3 rounded-md border border-gray-300'>
                     <h2 className='text-xl'>Total Products</h2>
@@ -35,7 +66,7 @@ export const Dashboard = () => {
                 </div>
                 <div className='flex flex-col p-3 rounded-md border border-gray-300'>
                     <h2 className='text-xl'>Total Orders</h2>
-                    <p className='text-2xl font-semibold'>{totalOrder}</p>
+                    <p className='text-2xl font-semibold'>{ordersCount}</p>
                 </div>
             </div>
             <h2 className='text-2xl mt-5 font-semibold'>Order Requests</h2>
@@ -43,22 +74,25 @@ export const Dashboard = () => {
                 <table className='w-full'>
                     <thead>
                         <tr className='border-b border-gray-300 bg-gray-100 rounded-tl-xl'>
-                            <th className='w-44 text-left p-2'>Name</th>
+                            <th className='w-44 text-left p-2'>Order Id</th>
                             <th className='w-44 text-left p-2'>Time</th>
                             <th className='w-44 text-left p-2'>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className='border-b border-gray-300'>
-                            <td className='w-44 text-left p-2'>Apple</td>
-                            <td className='w-44 text-left p-2'>2:00 PM</td>
-                            <td className='w-44 text-left p-2'>Pending</td>
-                        </tr>
-                        <tr className=''>
-                            <td className='w-44 text-left p-2'>Apple</td>
-                            <td className='w-44 text-left p-2'>2:00 PM</td>
-                            <td className='w-44 text-left p-2'>Pending</td>
-                        </tr>
+                        {order.map((items, index) => {
+                            const formattedDate = new Date(items.createdAt).toLocaleDateString('en-GB', {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric'
+                            });
+
+                            return <tr className='capitalize' key={index + 1}>
+                                <td className='pr-8 p-2'>{items.orderNumber}</td>
+                                <td className='pr-8 p-2'>{formattedDate}</td>
+                                <td className='pr-8 p-2 text-amber-500'>{items.status}</td>
+                            </tr>
+                        })}
                     </tbody>
                 </table>
             </div>
