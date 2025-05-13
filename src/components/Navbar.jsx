@@ -10,7 +10,7 @@ export const Navbar = () => {
 
     return (
         <div>
-            <nav className='w-full flex justify-between p-5 bg-amber-600/50 text-white'>
+            <nav className='w-full flex justify-between p-5 bg-amber-800 text-white'>
                 <h2 className='text-2xl'>Logo</h2>
                 <ul className='flex items-center gap-2 text-lg'>
                     {!token && <li className='cursor-pointer' onClick={() => navigate('/login')}>Login</li>}

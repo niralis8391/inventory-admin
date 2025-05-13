@@ -3,6 +3,7 @@ import { useState } from 'react'
 import API from '../API/API';
 import { useNavigate } from 'react-router-dom';
 import { Loading } from '../components/Loading';
+import encryptData from '../Utils/encrypt';
 
 export const Login = () => {
 
@@ -28,7 +29,9 @@ export const Login = () => {
         e.preventDefault()
         setLoading(true)
         try {
-            const response = await API.post('/admin/login', adminData, {
+            const encryptedData = encryptData(adminData);
+            const payload = { payload: encryptedData }
+            const response = await API.post('/admin/login', payload, {
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -64,7 +67,7 @@ export const Login = () => {
                     <input type='password' name='password' onChange={changeHandler} className='p-2 rounded-md border border-gray-300 block w-full' />
                 </label>
                 <button className='text-left py-2 text-gray-500 capitalize'>forgot password?</button>
-                <button className='w-fit bg-amber-600/50 px-5 py-2 rounded-md text-white mt-5 cursor-pointer'>Log in</button>
+                <button className='w-fit bg-amber-800 px-5 py-2 rounded-md text-white cursor-pointer'>Log in</button>
             </form>
         </div>
     )
