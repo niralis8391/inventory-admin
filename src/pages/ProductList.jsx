@@ -132,24 +132,50 @@ export const ProductList = () => {
                 </form>
             </div>
             <div className="flex flex-wrap items-center gap-3 w-full mt-5">
-                {products.map((product) => (
-                    <div className="bg-white border w-xs flex flex-col justify-start items-start border-gray-300 rounded-lg" key={product._id}>
-                        <img
-                            src={product.image}
-                            alt={product.productName}
-                            className='w-full h-64 object-cover rounded-t-md'
-                        />
-                        <div className='flex flex-col justify-between items-start p-4'>
-                            <h2 className="text-lg font-semibold capitalize mt-4">{product.productName}</h2>
-                            <h3 className="text-lg text-gray-600 capitalize py-2">{product.description}</h3>
-                            <p className="text-amber-600 font-semibold">₹{product.price}</p>
-                        </div>
-                        <div className='flex gap-2 items-center mt-3 p-4'>
-                            <button className='bg-blue-600 text-white cursor-pointer rounded-md px-5 py-1 text-xl' onClick={() => navigate(`/products/edit/${product._id}`)}>Edit</button>
-                            <button className='bg-red-600 text-white cursor-pointer rounded-md px-5 py-1 text-xl' onClick={() => deleteHandler(product._id)}>Delete</button>
-                        </div>
-                    </div>
-                ))}
+                <div className="overflow-x-auto p-4">
+                    <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow">
+                        <thead className="bg-gray-100 text-gray-700 text-left">
+                            <tr>
+                                <th className="px-4 py-2">Sr no.</th>
+                                <th className="px-4 py-2">Image</th>
+                                <th className="px-4 py-2">Product Name</th>
+                                <th className="px-4 py-2">Description</th>
+                                <th className="px-4 py-2">Price</th>
+                                <th className="px-4 py-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {products.map((product, index) => (
+                                <tr key={product.id} className="border-t border-gray-300 hover:bg-gray-50">
+                                    <td className="px-4 py-2">{index + 1}</td>
+                                    <td className="px-4 py-2">
+                                        <img
+                                            src={product.image}
+                                            alt={product.productName}
+                                            className="h-12 w-12 object-cover rounded"
+                                        />
+                                    </td>
+                                    <td className="px-4 py-2">{product.description}</td>
+                                    <td className="px-4 py-2">{product.productName}</td>
+                                    <td className="px-4 py-2">Rs. {product.price?.toFixed(2)}</td>
+                                    <td className="px-4 py-2 space-x-2">
+                                        <div className='flex gap-2 items-center'>
+                                            <button className='bg-blue-600/60 text-white cursor-pointer rounded-md px-5 py-1' onClick={() => navigate(`/products/edit/${product._id}`)}>Edit</button>
+                                            <button className='bg-red-600/60 text-white cursor-pointer rounded-md px-5 py-1' onClick={() => deleteHandler(product._id)}>Delete</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                            {products.length === 0 && (
+                                <tr>
+                                    <td colSpan="5" className="text-center py-4 text-gray-500">
+                                        No products found.
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     )

@@ -6,9 +6,12 @@ export const Dashboard = () => {
     const [productCount, setProductCount] = useState(0)
     const [ordersCount, setOrdersCount] = useState(0)
     const [order, setOrder] = useState([])
+    const [loading, setLoading] = useState(false)
+
 
     const token = localStorage.getItem("token")
     useEffect(() => {
+        setLoading(true)
         async function fetchProductCount() {
             try {
                 const response = await API.get('/product/productCounts', {
@@ -20,6 +23,8 @@ export const Dashboard = () => {
                 setProductCount(response.data.data)
             } catch (error) {
                 console.log(error.message)
+            } finally {
+                setLoading(false)
             }
         }
         fetchProductCount()
@@ -35,6 +40,8 @@ export const Dashboard = () => {
                 setOrdersCount(response.data.data)
             } catch (error) {
                 console.log(error.message)
+            } finally {
+                setLoading(false)
             }
         }
         fetchOrderCount()
@@ -51,11 +58,15 @@ export const Dashboard = () => {
             } catch (error) {
                 console.log(error)
             } finally {
+                setLoading(false)
             }
         }
         fetchOrderData()
     }, [])
 
+    if (loading) {
+        return <p className='h-screen'>Loading...</p>
+    }
 
     return (
         <div className='m-10 h-screen'>

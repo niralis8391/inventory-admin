@@ -113,6 +113,28 @@ export const EditProduct = () => {
             </label>
 
             <label className='flex flex-col text-lg text-gray-700 mt-5'>
+                Product Image
+                <input
+                    className='p-2 rounded-md border-3 border-gray-200'
+                    type='file'
+                    name='productImage'
+                    onChange={fileChangeHandler}
+                />
+            </label>
+
+            {previewUrl &&
+                <>
+                    <p className='text-lg text-gray-700 mt-5'>Preview: </p>
+                    <img
+                        src={previewUrl}
+                        className='w-fit h-36 mt-2'
+                        alt='product image'
+                    />
+                </>
+            }
+
+
+            <label className='flex flex-col text-lg text-gray-700 mt-5'>
                 Product Category
                 <select
                     className='p-2 rounded-md border-3 border-gray-200'
@@ -182,26 +204,6 @@ export const EditProduct = () => {
             </label>
 
 
-            <label className='flex flex-col text-lg text-gray-700 mt-5'>
-                Product Image
-                <input
-                    className='p-2 rounded-md border-3 border-gray-200'
-                    type='file'
-                    name='productImage'
-                    onChange={fileChangeHandler}
-                />
-            </label>
-
-            {previewUrl &&
-                <>
-                    <p className='text-lg text-gray-700 mt-5'>Preview: </p>
-                    <img
-                        src={previewUrl}
-                        className='w-fit h-36 mt-2'
-                        alt='product image'
-                    />
-                </>
-            }
 
 
             <div className='flex gap-2 items-start mt-5'>

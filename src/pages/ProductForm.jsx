@@ -127,7 +127,6 @@ export const ProductForm = () => {
                         <option value=''>Select Category</option>
                         <option value='fashion'>Fashion</option>
                         <option value='jewellery'>Jewellery</option>
-                        <option value='electronics'>Electronics</option>
                         {/* Add more categories as needed */}
                     </select>
                 </label>
@@ -142,9 +141,11 @@ export const ProductForm = () => {
                         required
                     >
                         <option value=''>Select Sub Category</option>
-                        <option value='groceries'>Cereals</option>
-                        <option value='electronics'>Mobile</option>
-                        <option value='clothing'>Genders</option>
+                        <option value='gold'>Gold</option>
+                        <option value='silver'>Silver</option>
+                        <option value='male'>Male</option>
+                        <option value='female'>Female</option>
+                        <option value='kids'>kids</option>
                         {/* Add more categories as needed */}
                     </select>
                 </label>

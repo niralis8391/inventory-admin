@@ -24,22 +24,22 @@ export const SideBar = ({ menu, setMenu }) => {
                 <NavLink
                     to="/"
                     end
-                    className={({ isActive }) => `p-3 rounded-md font-semibold text-gray-500 cursor-pointer border-2 border-transparent hover:border-2 hover:border-amber-800 ${isActive ? ' bg-orange-100' : ' '}`} onClick={setMenu}>
+                    className={({ isActive }) => `p-3 rounded-md font-semibold  cursor-pointer border-2 border-transparent hover:border-2 hover:border-amber-800 ${isActive ? ' bg-orange-100' : ' '}`} onClick={setMenu}>
                     Dashboard
                 </NavLink>
                 <NavLink
                     to="/addProduct"
-                    className={({ isActive }) => `p-3 rounded-md font-semibold text-gray-500 cursor-pointer border-2 border-transparent hover:border-2 hover:border-amber-800 ${isActive ? ' bg-orange-100' : ' '}`} onClick={setMenu}>
+                    className={({ isActive }) => `p-3 rounded-md font-semibold  cursor-pointer border-2 border-transparent hover:border-2 hover:border-amber-800 ${isActive ? ' bg-orange-100' : ' '}`} onClick={setMenu}>
                     Add Product
                 </NavLink>
                 <NavLink
                     to="/products"
-                    className={({ isActive }) => `p-3 rounded-md font-semibold text-gray-500 cursor-pointer border-2 border-transparent hover:border-2 hover:border-amber-800 ${isActive ? ' bg-orange-100' : ' '}`} onClick={setMenu}>
+                    className={({ isActive }) => `p-3 rounded-md font-semibold  cursor-pointer border-2 border-transparent hover:border-2 hover:border-amber-800 ${isActive ? ' bg-orange-100' : ' '}`} onClick={setMenu}>
                     Product List
                 </NavLink>
                 <NavLink
                     to="/orders"
-                    className={({ isActive }) => `p-3 rounded-md font-semibold text-gray-500 cursor-pointer border-2 border-transparent hover:border-2 hover:border-amber-800 ${isActive ? ' bg-orange-100' : ' '}`} onClick={setMenu}>
+                    className={({ isActive }) => `p-3 rounded-md font-semibold  cursor-pointer border-2 border-transparent hover:border-2 hover:border-amber-800 ${isActive ? ' bg-orange-100' : ' '}`} onClick={setMenu}>
                     Orders
                 </NavLink>
             </ul>
