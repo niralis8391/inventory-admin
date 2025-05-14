@@ -71,7 +71,7 @@ export const Dashboard = () => {
 
     return (
         <div className='h-screen'>
-            <div className='flex gap-5 items-center mt-5'>
+            <div className='flex gap-5 items-center'>
                 <div className='flex flex-col p-3 rounded-md border border-gray-300'>
                     <h2 className='text-xl'>Total Products</h2>
                     <p className='text-2xl font-semibold'>{productCount}</p>
