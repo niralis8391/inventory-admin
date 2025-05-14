@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import API from '../API/API';
+import { useNavigate } from 'react-router-dom'
 import encryptData from '../Utils/encrypt'
 
 export const Signup = () => {
@@ -12,6 +13,8 @@ export const Signup = () => {
         username: "",
         phone: ""
     });
+
+    const navigate = useNavigate()
 
     function changeHandler(event) {
         const { name, value } = event.target;
@@ -32,7 +35,10 @@ export const Signup = () => {
                     "Content-Type": "application/json"
                 }
             })
-            console.log(response)
+
+            if (response.status === 200) {
+                navigate('/login')
+            }
 
         } catch (error) {
             console.log(error)

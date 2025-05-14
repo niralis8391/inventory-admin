@@ -81,7 +81,7 @@ export const Orders = () => {
         return <p className='h-screen max-md:pt-10'>Loading...</p>
     }
 
-    if (order.length === 0) {
+    if (order.length === 0 || completedOrder.length === 0 || cancelleddOrder.length === 0) {
         return <p className='capitalize h-screen max-md:pt-10'>No Orders Yet. Shop something</p>
     }
 
