@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: "http://localhost:5000"
+    baseURL: "https://inventory-backend-2f7v.onrender.com"
 })
 
 export default API;

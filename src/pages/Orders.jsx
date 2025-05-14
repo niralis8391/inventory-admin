@@ -63,6 +63,8 @@ export const Orders = () => {
         }
     }
 
+    console.log(order)
+
     return (
         <div className='max-md:pt-10 max-md:overflow-x-scroll max-md:overflow-y-scroll h-screen'>
             <h2 className='text-xl font-semibold'>Orders</h2>
@@ -127,8 +129,8 @@ export const Orders = () => {
                                 </div>
                             </div>
                         })}
+                        <p className='text-lg text-gray-500 p-3 border-t border-b border-gray-300 w-full'>Total Cost:<span className='text-xl text-black font-semibold'> Rs. {moreDetails.totalAmount}</span></p>
                     </div>}
-                    <p className='text-xl p-3 border-t border-gray-300 w-full'>Total Cost: Rs. {order.totalAmount}</p>
                     <h2 className='text-xl font-semibold mt-10'>Shipping Details</h2>
                     <div className='flex flex-col gap-2 mt-2'>
                         <p className='font-semibold'>Name: <span className='font-normal text-gray-500'>{moreDetails.name}</span></p>
