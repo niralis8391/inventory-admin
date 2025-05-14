@@ -79,11 +79,11 @@ export const ProductList = () => {
     }
 
     if (loading) {
-        return <p className='capitalize h-screen pt-10'>Loading...</p>
+        return <p className='h-screen max-md:pt-10'>Loading...</p>
     }
 
     if (products.length === 0) {
-        return <p className='capitalize h-screen pt-10'>No Products Found</p>
+        return <p className='capitalize h-screen max-md:pt-10'>No Products Found</p>
     }
 
 
