@@ -194,7 +194,7 @@ export const Orders = () => {
                     </tbody>
                 </table>
 
-                <h2 className='text-lg p-2 m-3 w-fit border-b border-gray-300'>Completed Orders</h2>
+                <h2 className='text-lg p-2 m-3 w-fit border-b border-gray-300'>Cancelled Orders</h2>
                 <table className='w-full'>
                     <thead className='bg-gray-100'>
                         <tr className='p-2 capitalize'>
