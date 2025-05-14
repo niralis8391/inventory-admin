@@ -106,8 +106,8 @@ export const Orders = () => {
         <div className='max-md:pt-10 max-md:overflow-x-scroll max-md:overflow-y-scroll h-screen'>
             <h2 className='text-xl font-semibold'>Orders</h2>
             <h2 className='text-lg p-2 m-3 w-fit border-b border-gray-300'>Pending Orders</h2>
-            <div className='flex flex-col mt-5'>
-                <table className='w-full  max-md:h-[30rem]'>
+            <div className='flex flex-col mt-5 max-md:h-[30rem]'>
+                <table className='w-full border-b border-gray-300'>
                     <thead className='bg-gray-100'>
                         <tr className='p-2 capitalize'>
                             <td className='p-2 rounded-tl-md'>id</td>
@@ -151,7 +151,7 @@ export const Orders = () => {
                 </table>
 
                 <h2 className='text-lg p-2 m-3 w-fit border-b border-gray-300'>Completed Orders</h2>
-                <table className='w-full'>
+                <table className='w-full border-b border-gray-300'>
                     <thead className='bg-gray-100'>
                         <tr className='p-2 capitalize'>
                             <td className='p-2 rounded-tl-md'>id</td>
@@ -195,7 +195,7 @@ export const Orders = () => {
                 </table>
 
                 <h2 className='text-lg p-2 m-3 w-fit border-b border-gray-300'>Cancelled Orders</h2>
-                <table className='w-full'>
+                <table className='w-full border-b border-gray-300'>
                     <thead className='bg-gray-100'>
                         <tr className='p-2 capitalize'>
                             <td className='p-2 rounded-tl-md'>id</td>
