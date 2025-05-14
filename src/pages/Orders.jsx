@@ -78,11 +78,11 @@ export const Orders = () => {
     }
 
     if (loading) {
-        return <p className='capitalize h-screen'>Loading...</p>
+        return <p className='capitalize h-screen pt-10'>Loading...</p>
     }
 
     if (order.length === 0) {
-        return <p className='capitalize h-screen'>No Orders Yet. Shop something</p>
+        return <p className='capitalize h-screen pt-10'>No Orders Yet. Shop something</p>
     }
 
     async function updateStatusHandler(e) {

@@ -65,7 +65,7 @@ export const Dashboard = () => {
     }, [])
 
     if (loading) {
-        return <p className='h-screen'>Loading...</p>
+        return <p className='h-screen pt-10'>Loading...</p>
     }
 
     return (
