@@ -47,6 +47,7 @@ export const Dashboard = () => {
         fetchOrderCount()
 
         async function fetchOrderData() {
+            setLoading(true)
             try {
                 const response = await API.get('/order/pendingOrders', {
                     headers: {
