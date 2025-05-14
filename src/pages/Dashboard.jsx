@@ -30,6 +30,7 @@ export const Dashboard = () => {
         fetchProductCount()
 
         async function fetchOrderCount() {
+            setLoading(true)
             try {
                 const response = await API.get('/order/orderCount', {
                     headers: {
