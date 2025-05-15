@@ -71,7 +71,7 @@ export const Dashboard = () => {
     }
 
     return (
-        <div className='h-screen'>
+        <div className='h-screen max-md:mt-10'>
             <div className='flex gap-5 items-center'>
                 <div className='flex flex-col p-3 rounded-md border border-gray-300'>
                     <h2 className='text-xl'>Total Products</h2>

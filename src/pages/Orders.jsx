@@ -103,7 +103,7 @@ export const Orders = () => {
 
 
     return (
-        <div className='max-md:pt-10 max-md:overflow-x-scroll max-md:overflow-y-scroll h-screen'>
+        <div className='max-md:pt-10 max-md:overflow-x-scroll max-md:overflow-y-scroll h-screen max-md:mt-5'>
             <h2 className='text-xl font-semibold'>Orders</h2>
             <h2 className='text-lg p-2 m-3 w-fit border-b border-gray-300'>Pending Orders</h2>
             <div className='flex flex-col mt-5 max-md:h-[30rem]'>
