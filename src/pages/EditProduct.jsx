@@ -17,6 +17,7 @@ export const EditProduct = () => {
         category: '',
         subCategory: '',
         description: '',
+        size: '',
         quantity: 0,
         price: 0,
         image: null,
@@ -173,6 +174,17 @@ export const EditProduct = () => {
                     name='description'
                     onChange={changeHandler}
                     value={formData.description}
+                    required
+                />
+            </label>
+
+            <label className='flex flex-col text-lg text-gray-700 mt-5'>
+                Size
+                <input
+                    className='p-2 rounded-md border-3 border-gray-200'
+                    name='size'
+                    onChange={changeHandler}
+                    value={formData.size}
                     required
                 />
             </label>

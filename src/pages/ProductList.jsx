@@ -133,20 +133,22 @@ export const ProductList = () => {
             </div>
             <div className="flex flex-wrap items-center gap-3 w-full mt-5">
                 <div className="overflow-x-auto p-4">
-                    <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow">
+                    <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow mb-10">
                         <thead className="bg-gray-100 text-gray-700 text-left">
                             <tr>
                                 <th className="px-4 py-2">Sr no.</th>
                                 <th className="px-4 py-2">Image</th>
                                 <th className="px-4 py-2">Product Name</th>
                                 <th className="px-4 py-2">Description</th>
+                                <th className="px-4 py-2">Quantity</th>
+                                <th className="px-4 py-2">Size</th>
                                 <th className="px-4 py-2">Price</th>
                                 <th className="px-4 py-2">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {products.map((product, index) => (
-                                <tr key={product.id} className="border-t border-gray-300 hover:bg-gray-50">
+                                <tr key={product.id} className="border-t border-gray-300 hover:bg-gray-50 capitalize">
                                     <td className="px-4 py-2">{index + 1}</td>
                                     <td className="px-4 py-2">
                                         <img
@@ -155,8 +157,10 @@ export const ProductList = () => {
                                             className="h-12 w-12 object-cover rounded"
                                         />
                                     </td>
-                                    <td className="px-4 py-2">{product.description}</td>
                                     <td className="px-4 py-2">{product.productName}</td>
+                                    <td className="px-4 py-2">{product.description}</td>
+                                    <td className="px-4 py-2">{product.quantity}</td>
+                                    <td className="px-4 py-2">{product.size}</td>
                                     <td className="px-4 py-2">Rs. {product.price?.toFixed(2)}</td>
                                     <td className="px-4 py-2 space-x-2">
                                         <div className='flex gap-2 items-center'>
