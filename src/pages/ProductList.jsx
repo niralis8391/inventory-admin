@@ -89,7 +89,8 @@ export const ProductList = () => {
 
     return (
         <div className='h-full'>
-            <div className='flex max-md:flex-col-reverse items-center-safe'>
+            <h2 className='text-xl font-semibold'>Product Lists</h2>
+            <div className='flex max-md:flex-col-reverse items-center-safe mt-5'>
                 <div className="relative group transition-all duration-300 ease-in-out">
                     <button
                         onClick={toggleDropdown}
@@ -148,12 +149,11 @@ export const ProductList = () => {
                         </thead>
                         <tbody>
                             {products.map((product, index) => (
-                                <tr key={product.id} className="border-t border-gray-300 hover:bg-gray-50 capitalize">
+                                <tr key={product._id} className="border-t border-gray-300 hover:bg-gray-50 capitalize">
                                     <td className="px-4 py-2">{index + 1}</td>
                                     <td className="px-4 py-2">
-                                        <img
-                                            src={product.image}
-                                            alt={product.productName}
+                                        <img src={product.image.url}
+                                            alt={product.productName || "product image"}
                                             className="h-12 w-12 object-cover rounded"
                                         />
                                     </td>

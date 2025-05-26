@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import API from '../API/API';
+import { Loading } from '../components/Loading';
 
 export const ProductForm = () => {
 
@@ -10,6 +11,7 @@ export const ProductForm = () => {
         subCategory: '',
         description: '',
         quantity: 0,
+        size: '',
         price: 0,
         image: null,
     });
@@ -17,8 +19,6 @@ export const ProductForm = () => {
 
     const [loading, setLoading] = useState(false);
     const [previewUrl, setPreviewUrl] = useState('');
-
-
 
     const navigate = useNavigate();
 
@@ -31,49 +31,55 @@ export const ProductForm = () => {
 
     const fileChangeHandler = (e) => {
         const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setFormData((preData) => ({
-                ...preData,
-                image: reader.result
-            }));
-        };
-        reader.readAsDataURL(file);
+        if (!file) return;
+
+        setFormData((prevData) => ({
+            ...prevData,
+            image: file, // Directly set the File object
+        }));
+
+        // For preview only
         setPreviewUrl(URL.createObjectURL(file));
     };
 
+
     const submitHandler = async (e) => {
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
+
         try {
-            const response = await API.post('/product/createProduct', formData, {
+            const formDataToSend = new FormData();
+            formDataToSend.append('productName', formData.productName);
+            formDataToSend.append('description', formData.description);
+            formDataToSend.append('category', formData.category);
+            formDataToSend.append('subCategory', formData.subCategory);
+            formDataToSend.append('price', formData.price);
+            formDataToSend.append('quantity', formData.quantity);
+            formDataToSend.append('size', formData.size);
+            formDataToSend.append('image', formData.image); // image is a File object
+
+            const response = await API.post('/product/createProduct', formDataToSend, {
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'multipart/form-data',
                     "Authorization": `Bearer ${token}`
                 }
-            })
+            });
+
             if (response.status === 200) {
-                navigate('/products')
+                navigate('/products');
             }
         } catch (error) {
-            console.log(error)
+            console.error(error);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-        // setFormData({
-        //     productName: '',
-        //     category: '',
-        //     subCategory: '',
-        //     description: '',
-        //     quantity: 0,
-        //     price: 0,
-        //     image: null,
-        // })
     };
+
 
     return (
         <div>
-            {loading && <p>Loading...</p>}
+            {loading && <Loading />}
+            <h2 className='text-xl font-semibold'>Add Products</h2>
             <form
                 className='w-[40rem] max-sm:w-full mx-auto p-10 rounded-xl shadow-2xl border border-gray-200 mt-10'
                 onSubmit={submitHandler}
@@ -91,17 +97,17 @@ export const ProductForm = () => {
                 </label>
 
 
-
                 <label className='flex flex-col text-lg text-gray-700 mt-5'>
                     Product Image
                     <input
-                        className='p-2 rounded-md border-3 border-dashed border-gray-200'
+                        className='p-2 rounded-md border-3 border-gray-200'
                         type='file'
-                        name='productImage'
+                        name='image' // ✅ match with formData field
+                        accept='image/*' // ✅ limit to images
                         onChange={fileChangeHandler}
-                        required
                     />
                 </label>
+
 
                 {previewUrl &&
                     <>
@@ -157,6 +163,17 @@ export const ProductForm = () => {
                         name='description'
                         onChange={changeHandler}
                         value={formData.description}
+                        required
+                    />
+                </label>
+
+                <label className='flex flex-col text-lg text-gray-700 mt-5'>
+                    Size
+                    <input
+                        className='p-2 rounded-md border-3 border-gray-200'
+                        name='size'
+                        onChange={changeHandler}
+                        value={formData.size}
                         required
                     />
                 </label>

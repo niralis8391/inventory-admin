@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import API from '../API/API';
 import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom';
 
 export const Orders = () => {
 
     const token = localStorage.getItem("token");
+    const navigate = useNavigate()
 
     const [order, setOrder] = useState([])
     const [completedOrder, setCompletedOrder] = useState([])
@@ -77,13 +79,30 @@ export const Orders = () => {
         setMoreDetails(items)
     }
 
+    async function deleteOrder(id) {
+        console.log(id)
+        try {
+            const response = await API.delete(`/order/deleteOrder/${id}`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
+            if (response.status === 200) {
+                navigate('/')
+            }
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
     if (loading) {
         return <p className='h-screen max-md:pt-10'>Loading...</p>
     }
 
-    if (order.length === 0 || completedOrder.length === 0 || cancelleddOrder.length === 0) {
-        return <p className='capitalize h-screen max-md:pt-10'>No Orders Yet.</p>
-    }
+    // if (order.length === 0 || completedOrder.length === 0 || cancelleddOrder.length === 0) {
+    //     return <p className='capitalize h-screen max-md:pt-10'>No Orders Yet.</p>
+    // }
 
     async function updateStatusHandler(e) {
         e.preventDefault()
@@ -94,6 +113,10 @@ export const Orders = () => {
                     "Content-Type": "application/json"
                 }
             })
+            if (response.status === 200) {
+                navigate('/')
+
+            }
         } catch (error) {
             console.log(error)
         } finally {
@@ -119,7 +142,7 @@ export const Orders = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {order.map((items) => {
+                        {order.length > 0 ? order.map((items) => {
                             const formattedDate = new Date(items.createdAt).toLocaleDateString('en-GB', {
                                 day: '2-digit',
                                 month: 'short',
@@ -140,17 +163,19 @@ export const Orders = () => {
                                         <button className='text-blue-800 hover:scale-105 cursor-pointer' onClick={() => { setAction(true); setOrderId(items._id) }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="none" /><g className="edit-outline"><g fill="currentColor" fillRule="evenodd" className="Vector" clipRule="evenodd"><path d="M2 6.857A4.857 4.857 0 0 1 6.857 2H12a1 1 0 1 1 0 2H6.857A2.857 2.857 0 0 0 4 6.857v10.286A2.857 2.857 0 0 0 6.857 20h10.286A2.857 2.857 0 0 0 20 17.143V12a1 1 0 1 1 2 0v5.143A4.857 4.857 0 0 1 17.143 22H6.857A4.857 4.857 0 0 1 2 17.143z" /><path d="m15.137 13.219l-2.205 1.33l-1.033-1.713l2.205-1.33l.003-.002a1.2 1.2 0 0 0 .232-.182l5.01-5.036a3 3 0 0 0 .145-.157c.331-.386.821-1.15.228-1.746c-.501-.504-1.219-.028-1.684.381a6 6 0 0 0-.36.345l-.034.034l-4.94 4.965a1.2 1.2 0 0 0-.27.41l-.824 2.073a.2.2 0 0 0 .29.245l1.032 1.713c-1.805 1.088-3.96-.74-3.18-2.698l.825-2.072a3.2 3.2 0 0 1 .71-1.081l4.939-4.966l.029-.029c.147-.15.641-.656 1.24-1.02c.327-.197.849-.458 1.494-.508c.74-.059 1.53.174 2.15.797a2.9 2.9 0 0 1 .845 1.75a3.15 3.15 0 0 1-.23 1.517c-.29.717-.774 1.244-.987 1.457l-5.01 5.036q-.28.281-.62.487m4.453-7.126s-.004.003-.013.006z" /></g></g></svg>
                                         </button>
-                                        <button className='text-red-500 hover:scale-105 cursor-pointer' onClick={() => moreDetailsHandler(items)}>
+                                        <button className='text-red-500 hover:scale-105 cursor-pointer' onClick={() => deleteOrder(items._id)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="none" /><path fill="currentColor" fillRule="evenodd" d="m6.774 6.4l.812 13.648a.8.8 0 0 0 .798.752h7.232a.8.8 0 0 0 .798-.752L17.226 6.4zm11.655 0l-.817 13.719A2 2 0 0 1 15.616 22H8.384a2 2 0 0 1-1.996-1.881L5.571 6.4H3.5v-.7a.5.5 0 0 1 .5-.5h16a.5.5 0 0 1 .5.5v.7zM14 3a.5.5 0 0 1 .5.5v.7h-5v-.7A.5.5 0 0 1 10 3zM9.5 9h1.2l.5 9H10zm3.8 0h1.2l-.5 9h-1.2z" /></svg>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
-                        })}
+                        }) : <tr >
+                            <td className='p-5'>No Orders Yet.</td>
+                        </tr>}
                     </tbody>
                 </table>
 
-                <h2 className='text-lg p-2 m-3 w-fit border-b border-gray-300'>Completed Orders</h2>
+                <h2 className='text-lg p-2 m-5 w-fit border-b border-gray-300'>Completed Orders</h2>
                 <table className='w-full border-b border-gray-300'>
                     <thead className='bg-gray-100'>
                         <tr className='p-2 capitalize'>
@@ -163,7 +188,7 @@ export const Orders = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {completedOrder.map((items) => {
+                        {completedOrder.length > 0 ? completedOrder.map((items) => {
                             const formattedDate = new Date(items.createdAt).toLocaleDateString('en-GB', {
                                 day: '2-digit',
                                 month: 'short',
@@ -184,17 +209,19 @@ export const Orders = () => {
                                         <button className='text-blue-800 hover:scale-105 cursor-pointer' onClick={() => { setAction(true); setOrderId(items._id) }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="none" /><g className="edit-outline"><g fill="currentColor" fillRule="evenodd" className="Vector" clipRule="evenodd"><path d="M2 6.857A4.857 4.857 0 0 1 6.857 2H12a1 1 0 1 1 0 2H6.857A2.857 2.857 0 0 0 4 6.857v10.286A2.857 2.857 0 0 0 6.857 20h10.286A2.857 2.857 0 0 0 20 17.143V12a1 1 0 1 1 2 0v5.143A4.857 4.857 0 0 1 17.143 22H6.857A4.857 4.857 0 0 1 2 17.143z" /><path d="m15.137 13.219l-2.205 1.33l-1.033-1.713l2.205-1.33l.003-.002a1.2 1.2 0 0 0 .232-.182l5.01-5.036a3 3 0 0 0 .145-.157c.331-.386.821-1.15.228-1.746c-.501-.504-1.219-.028-1.684.381a6 6 0 0 0-.36.345l-.034.034l-4.94 4.965a1.2 1.2 0 0 0-.27.41l-.824 2.073a.2.2 0 0 0 .29.245l1.032 1.713c-1.805 1.088-3.96-.74-3.18-2.698l.825-2.072a3.2 3.2 0 0 1 .71-1.081l4.939-4.966l.029-.029c.147-.15.641-.656 1.24-1.02c.327-.197.849-.458 1.494-.508c.74-.059 1.53.174 2.15.797a2.9 2.9 0 0 1 .845 1.75a3.15 3.15 0 0 1-.23 1.517c-.29.717-.774 1.244-.987 1.457l-5.01 5.036q-.28.281-.62.487m4.453-7.126s-.004.003-.013.006z" /></g></g></svg>
                                         </button>
-                                        <button className='text-red-500 hover:scale-105 cursor-pointer' onClick={() => moreDetailsHandler(items)}>
+                                        <button className='text-red-500 hover:scale-105 cursor-pointer' onClick={() => deleteOrder(items._id)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="none" /><path fill="currentColor" fillRule="evenodd" d="m6.774 6.4l.812 13.648a.8.8 0 0 0 .798.752h7.232a.8.8 0 0 0 .798-.752L17.226 6.4zm11.655 0l-.817 13.719A2 2 0 0 1 15.616 22H8.384a2 2 0 0 1-1.996-1.881L5.571 6.4H3.5v-.7a.5.5 0 0 1 .5-.5h16a.5.5 0 0 1 .5.5v.7zM14 3a.5.5 0 0 1 .5.5v.7h-5v-.7A.5.5 0 0 1 10 3zM9.5 9h1.2l.5 9H10zm3.8 0h1.2l-.5 9h-1.2z" /></svg>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
-                        })}
+                        }) : <tr >
+                            <td className='p-5'>No Completed Orders Yet.</td>
+                        </tr>}
                     </tbody>
                 </table>
 
-                <h2 className='text-lg p-2 m-3 w-fit border-b border-gray-300'>Cancelled Orders</h2>
+                <h2 className='text-lg p-2 m-5 w-fit border-b border-gray-300'>Cancelled Orders</h2>
                 <table className='w-full border-b border-gray-300'>
                     <thead className='bg-gray-100'>
                         <tr className='p-2 capitalize'>
@@ -207,7 +234,7 @@ export const Orders = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {cancelleddOrder.map((items) => {
+                        {cancelleddOrder.length > 0 ? cancelleddOrder.map((items) => {
                             const formattedDate = new Date(items.createdAt).toLocaleDateString('en-GB', {
                                 day: '2-digit',
                                 month: 'short',
@@ -228,13 +255,15 @@ export const Orders = () => {
                                         <button className='text-blue-800 hover:scale-105 cursor-pointer' onClick={() => { setAction(true); setOrderId(items._id) }}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="none" /><g className="edit-outline"><g fill="currentColor" fillRule="evenodd" className="Vector" clipRule="evenodd"><path d="M2 6.857A4.857 4.857 0 0 1 6.857 2H12a1 1 0 1 1 0 2H6.857A2.857 2.857 0 0 0 4 6.857v10.286A2.857 2.857 0 0 0 6.857 20h10.286A2.857 2.857 0 0 0 20 17.143V12a1 1 0 1 1 2 0v5.143A4.857 4.857 0 0 1 17.143 22H6.857A4.857 4.857 0 0 1 2 17.143z" /><path d="m15.137 13.219l-2.205 1.33l-1.033-1.713l2.205-1.33l.003-.002a1.2 1.2 0 0 0 .232-.182l5.01-5.036a3 3 0 0 0 .145-.157c.331-.386.821-1.15.228-1.746c-.501-.504-1.219-.028-1.684.381a6 6 0 0 0-.36.345l-.034.034l-4.94 4.965a1.2 1.2 0 0 0-.27.41l-.824 2.073a.2.2 0 0 0 .29.245l1.032 1.713c-1.805 1.088-3.96-.74-3.18-2.698l.825-2.072a3.2 3.2 0 0 1 .71-1.081l4.939-4.966l.029-.029c.147-.15.641-.656 1.24-1.02c.327-.197.849-.458 1.494-.508c.74-.059 1.53.174 2.15.797a2.9 2.9 0 0 1 .845 1.75a3.15 3.15 0 0 1-.23 1.517c-.29.717-.774 1.244-.987 1.457l-5.01 5.036q-.28.281-.62.487m4.453-7.126s-.004.003-.013.006z" /></g></g></svg>
                                         </button>
-                                        <button className='text-red-500 hover:scale-105 cursor-pointer' onClick={() => moreDetailsHandler(items)}>
+                                        <button className='text-red-500 hover:scale-105 cursor-pointer' onClick={() => deleteOrder(items._id)}>
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect width="24" height="24" fill="none" /><path fill="currentColor" fillRule="evenodd" d="m6.774 6.4l.812 13.648a.8.8 0 0 0 .798.752h7.232a.8.8 0 0 0 .798-.752L17.226 6.4zm11.655 0l-.817 13.719A2 2 0 0 1 15.616 22H8.384a2 2 0 0 1-1.996-1.881L5.571 6.4H3.5v-.7a.5.5 0 0 1 .5-.5h16a.5.5 0 0 1 .5.5v.7zM14 3a.5.5 0 0 1 .5.5v.7h-5v-.7A.5.5 0 0 1 10 3zM9.5 9h1.2l.5 9H10zm3.8 0h1.2l-.5 9h-1.2z" /></svg>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
-                        })}
+                        }) : <tr >
+                            <td className='p-5'>No Cancelled Orders Yet.</td>
+                        </tr>}
                     </tbody>
                 </table>
             </div>
@@ -248,7 +277,7 @@ export const Orders = () => {
                         {moreDetails.items.map((item, index) => {
                             return <div className='flex flex-col gap-2' key={index}>
                                 <p className='text-gray-500'>{index + 1}.</p>
-                                <img src={item.product.image} className='w-44 h-44' />
+                                <img src={item.product.image.url} className='w-44 h-44' />
                                 <div>
                                     <p className='text-xl'>{item.product.productName}</p>
                                     <p className='font-semibold text-gray-500'>Qty: {item.quantity}</p>
@@ -274,7 +303,7 @@ export const Orders = () => {
             {action && <motion.div
                 initial={{ opacity: 0, y: -100 }}
                 animate={{ opacity: 1, y: 0 }}
-                className='fixed top-10 left-2/5 shadow-2xl w-xs bg-white p-8 rounded-md'>
+                className="fixed top-10 left-1/2 transform -translate-x-1/2 w-[90%] max-w-xs bg-white p-8 rounded-md shadow-2xl z-50">
                 <form className='flex flex-col gap-2' onSubmit={updateStatusHandler}>
                     <label className="flex items-center p-3 border border-gray-300 rounded-lg cursor-pointer hover:border-amber-500 transition">
                         <input

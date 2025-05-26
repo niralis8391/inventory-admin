@@ -32,24 +32,36 @@ export const EditProduct = () => {
 
     const fileChangeHandler = (e) => {
         const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setFormData((preData) => ({
-                ...preData,
-                image: reader.result
-            }));
-        };
-        reader.readAsDataURL(file);
+        if (!file) return;
+
+        setFormData((prevData) => ({
+            ...prevData,
+            image: file, // Directly set the File object
+        }));
+        console.log(file)
+        // For preview only
         setPreviewUrl(URL.createObjectURL(file));
     };
 
     const submitHandler = async (e) => {
         e.preventDefault();
-        setLoading(true)
+        setLoading(true);
+
+        const formDataToSend = new FormData();
+        formDataToSend.append('productName', formData.productName);
+        formDataToSend.append('description', formData.description);
+        formDataToSend.append('category', formData.category);
+        formDataToSend.append('subCategory', formData.subCategory);
+        formDataToSend.append('price', formData.price);
+        formDataToSend.append('size', formData.size);
+        formDataToSend.append('quantity', formData.quantity);
+        formDataToSend.append('image', formData.image);
+
+
         try {
-            const response = await API.put(`/product/updateProduct/${productId}`, formData, {
+            const response = await API.put(`/product/updateProduct/${productId}`, formDataToSend, {
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'multipart/form-data',
                     "Authorization": `Bearer ${token}`
                 }
             })
@@ -61,15 +73,6 @@ export const EditProduct = () => {
         } finally {
             setLoading(false)
         }
-        // setFormData({
-        //     productName: '',
-        //     category: '',
-        //     subCategory: '',
-        //     description: '',
-        //     quantity: 0,
-        //     price: 0,
-        //     image: null,
-        // })
     };
 
 
@@ -85,7 +88,7 @@ export const EditProduct = () => {
                 })
                 console.log(response)
                 setFormData(response.data.data)
-                setPreviewUrl(response.data.data.image)
+                setPreviewUrl(response.data.data.image.url)
             } catch (error) {
                 console.log(error)
             } finally {
@@ -118,10 +121,12 @@ export const EditProduct = () => {
                 <input
                     className='p-2 rounded-md border-3 border-gray-200'
                     type='file'
-                    name='productImage'
+                    name='image' // ✅ match with formData field
+                    accept='image/*' // ✅ limit to images
                     onChange={fileChangeHandler}
                 />
             </label>
+
 
             {previewUrl &&
                 <>
